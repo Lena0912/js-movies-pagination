@@ -17,11 +17,11 @@ function createMarkup(arr) {
         `<li class="movie-card">
         <img src="${
           poster_path
-            ? 'https://image.tmdb.org/t/p/w500' + poster_path
+            ? 'https://image.tmdb.org/t/p/w300' + poster_path
             : defaults.poster
         }" alt="${original_title || defaults.title}">
         <div class="movie-info">
-          <h2>${original_title || defaults.title}</h2>
+          <h2 class="movie-title">${original_title || defaults.title}</h2>
           <p>${release_date || defaults.date}Release Date:</p>
           <p>${vote_average || defaults.vote}Vote Average:</p>
         </div>
