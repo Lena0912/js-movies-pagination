@@ -1,5 +1,6 @@
 const elements = {
   container: document.querySelector('.js-movie-list'),
+  loadBtn: document.querySelector('.js-load-more'),
 };
 
 
@@ -9,6 +10,30 @@ const defaults = {
   title: 'Title not found',
   vote: 'XX.XX',
 };
+
+let page = 1;
+
+elements.loadBtn.addEventListener('click', handlerLoadMore);
+
+function handlerLoadMore() {
+    page += 1;
+    serviceFilms(page)
+      .then(data => {
+        elements.container.insertAdjacentHTML(
+          'beforeend',
+          createMarkup(data.results)
+        );
+        if (data.page >= data.total_pages) {
+          elements.loadBtn.classList.replace('load-more', 'load-more-hidden');
+        }
+      })
+      .catch(err => {
+        elements.container.insertAdjacentHTML(
+          'beforeend',
+          createMarkup(data.results)
+        );
+      });
+}
 
 function createMarkup(arr) {
   return arr
@@ -54,5 +79,11 @@ serviceFilms()
     .then(data => { 
         console.log(data);
         elements.container.insertAdjacentHTML('beforeend', createMarkup(data.results));
-    })
-  .catch((err) => console.log(err));
+
+        if (data.page < data.total_pages) {
+            elements.loadBtn.classList.replace('load-more-hidden', 'load-more')
+        }
+    })    
+    .catch((err) => {
+        elements.container.insertAdjacentHTML('beforeend', createMarkup(data.results));
+  });
